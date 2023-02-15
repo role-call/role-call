@@ -1,0 +1,72 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-10 09:02+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language:  de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: attendance/menus.py:18
+msgid "Sign in"
+msgstr "Einloggen"
+
+#: attendance/menus.py:25
+msgid "Statistics"
+msgstr "Statistik"
+
+#: attendance/menus.py:30 attendance/templates/occupants.html:57
+msgid "Occupants"
+msgstr "BewohnerInnen"
+
+#: attendance/menus.py:36
+msgid "Create New Occupant"
+msgstr "Neue BewohnerIn anlegen"
+
+#: attendance/menus.py:46
+msgid "Sign out"
+msgstr "Ausloggen"
+
+#: attendance/templates/occupants.html:61
+msgid "First Name"
+msgstr "Vorname"
+
+#: attendance/templates/occupants.html:62
+msgid "Last Name"
+msgstr "Nachname"
+
+#: attendance/templates/occupants.html:63
+msgid "Last Updated"
+msgstr "Letzte Änderung "
+
+#~ msgid "Sign In"
+#~ msgstr "Einloggen"
+
+#, python-format
+#~ msgid ""
+#~ "Please sign in with one\n"
+#~ "of your existing third party accounts. Or, <a "
+#~ "href=\"%(signup_url)s\">sign up</a>\n"
+#~ "for a %(site_name)s account and sign in below:"
+#~ msgstr ""
+#~ "Bitte wählen sie einen ihrer existierenden Dritt Account\n"
+#~ "of your existing third party accounts. Or, <a "
+#~ "href=\"%(signup_url)s\">sign up</a>\n"
+#~ "for a %(site_name)s account and sign in below:"
+
+#~ msgid "or"
+#~ msgstr "oder"
+
+#~ msgid "Forgot Password?"
+#~ msgstr "Passwort vergessen?"

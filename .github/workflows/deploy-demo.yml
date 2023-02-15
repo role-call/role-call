@@ -1,0 +1,37 @@
+name: Deploy to Test instance
+
+on: [ push ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: demo
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_DEBUG: false
+          envkey_SITE_ID: 23
+          envkey_SECRET_KEY: "insecure"
+          envkey_DATABASE_URL: "sqlite:///db.sqlite3"
+          envkey_INTERNAL_IPS: "127.0.0.1"
+          envkey_CSRF_TRUSTED_ORIGINS: "http://localhost:8080,http://localhost:8000,http://127.0.0.1:8000,http://127.0.0.1:8080,https://demo.baff-business.com,https://demo-login.baff-business.com"
+          envkey_NEXTCLOUD_URL: "demo-cloud.baff-business.com/"
+          envkey_DEFAULT_DOMAIN: "demo.baff-business.com"
+          envkey_ALLOWED_HOSTS: "*"
+          directory: backend
+          file_name: .env
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEMO_SSH_PRIVATE }}
+          known_hosts: unnecessary
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
+      - name: Ensure deploy script executable
+        run: chmod +x utils/deploy-stack.sh
+      - name: Deploy with rsync
+        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" docker-compose.yml ./backend ./utils ./frontend ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ansible/
+      - name: docker compose deploy
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} /home/ansible/utils/deploy-stack.sh

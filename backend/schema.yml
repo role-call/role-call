@@ -1,0 +1,827 @@
+openapi: 3.0.3
+info:
+  title: Roll Call API
+  version: 0.0.1
+  description: Attendance management
+paths:
+  /api/token/:
+    post:
+      operationId: api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: api_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /groups/:
+    get:
+      operationId: groups_list
+      description: API endpoint that allows groups to be viewed or edited.
+      tags:
+      - groups
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+          description: ''
+    post:
+      operationId: groups_create
+      description: API endpoint that allows groups to be viewed or edited.
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+  /groups/{id}/:
+    get:
+      operationId: groups_retrieve
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Gruppe.
+        required: true
+      tags:
+      - groups
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    put:
+      operationId: groups_update
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Gruppe.
+        required: true
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    patch:
+      operationId: groups_partial_update
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Gruppe.
+        required: true
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    delete:
+      operationId: groups_destroy
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Gruppe.
+        required: true
+      tags:
+      - groups
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /occupanteros/:
+    get:
+      operationId: occupanteros_list
+      tags:
+      - occupanteros
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Occupant'
+          description: ''
+    post:
+      operationId: occupanteros_create
+      tags:
+      - occupanteros
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Occupant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Occupant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Occupant'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant'
+          description: ''
+  /occupanteros/{external_id}/:
+    get:
+      operationId: occupanteros_retrieve
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant'
+          description: ''
+    put:
+      operationId: occupanteros_update
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Occupant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Occupant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Occupant'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant'
+          description: ''
+    patch:
+      operationId: occupanteros_partial_update
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOccupant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOccupant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOccupant'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant'
+          description: ''
+    delete:
+      operationId: occupanteros_destroy
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /occupanteros_pictures/:
+    get:
+      operationId: occupanteros_pictures_list
+      tags:
+      - occupanteros_pictures
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Occupant_Picture'
+          description: ''
+    post:
+      operationId: occupanteros_pictures_create
+      tags:
+      - occupanteros_pictures
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Occupant_Picture'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Occupant_Picture'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Occupant_Picture'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant_Picture'
+          description: ''
+  /occupanteros_pictures/{external_id}/:
+    get:
+      operationId: occupanteros_pictures_retrieve
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros_pictures
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant_Picture'
+          description: ''
+    put:
+      operationId: occupanteros_pictures_update
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros_pictures
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Occupant_Picture'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Occupant_Picture'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Occupant_Picture'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant_Picture'
+          description: ''
+    patch:
+      operationId: occupanteros_pictures_partial_update
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros_pictures
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOccupant_Picture'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOccupant_Picture'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOccupant_Picture'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occupant_Picture'
+          description: ''
+    delete:
+      operationId: occupanteros_pictures_destroy
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - occupanteros_pictures
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /users/:
+    get:
+      operationId: users_list
+      description: API endpoint that allows users to be viewed or edited.
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: users_create
+      description: API endpoint that allows users to be viewed or edited.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /users/{id}/:
+    get:
+      operationId: users_retrieve
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Benutzer.
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Benutzer.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Benutzer.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: users_destroy
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Benutzer.
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+      required:
+      - name
+      - url
+    Occupant:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        firstName:
+          type: string
+          maxLength: 200
+        lastName:
+          type: string
+          maxLength: 200
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Occupant_Picture'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - external_id
+      - firstName
+      - lastName
+      - picture
+    Occupant_Picture:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        img:
+          type: string
+          format: uri
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - external_id
+      - modified_at
+    PatchedGroup:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+    PatchedOccupant:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        firstName:
+          type: string
+          maxLength: 200
+        lastName:
+          type: string
+          maxLength: 200
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Occupant_Picture'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+    PatchedOccupant_Picture:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        img:
+          type: string
+          format: uri
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        username:
+          type: string
+          title: Benutzername
+          description: Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern
+            und @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: E-Mail-Adresse
+          maxLength: 254
+        groups:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: Gruppen
+          title: Gruppen
+          description: Die Gruppen, denen der Benutzer angehört. Ein Benutzer bekommt
+            alle Berechtigungen dieser Gruppen.
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    User:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        username:
+          type: string
+          title: Benutzername
+          description: Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern
+            und @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: E-Mail-Adresse
+          maxLength: 254
+        groups:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: Gruppen
+          title: Gruppen
+          description: Die Gruppen, denen der Benutzer angehört. Ein Benutzer bekommt
+            alle Berechtigungen dieser Gruppen.
+      required:
+      - url
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

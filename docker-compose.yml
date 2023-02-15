@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+
+
+  roll-call-backend:
+    image: "callroll/backend"
+    build: backend/
+    env_file:
+      - backend/.env
+    container_name: "roll-call-backend"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.roll-backend.rule=Host(`demo.baff-business.com`)"
+      - "traefik.http.routers.roll-backend.tls=true"
+      - "traefik.http.routers.roll-backend.entrypoints=websecure"
+      - "traefik.http.routers.roll-backend.tls.certresolver=myresolver"
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true

@@ -7,12 +7,14 @@ _roll call ist a web-based tool to take attendance of individuals_
 Roll call uses python with django in a venv so
 ### Linux/Mac OS
 ```
+ cd backend
  source bin/activate
  pip install -r requirements.txt
  python3 manage.py runserver 8000
 ```
 ### Windows
 ```
+ cd backend
  source bin\activate
  pip install -r requirements.txt
  python3 manage.py runserver 8000

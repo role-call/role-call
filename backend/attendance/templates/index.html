@@ -1,0 +1,15 @@
+
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+
+                {% if user.is_authenticated%}
+                <p>Welcome, {{user.username}}</p>
+                <a href="{% url 'account_logout'  %}">Logout</a>
+                {%else%}
+                <p>Please <a href="{% url 'account_login'  %}">Login</a></p>
+                {%endif%}
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+{% endblock %}
