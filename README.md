@@ -1,10 +1,10 @@
-# Role call
+# Roll call
 
-_role call ist a web-based tool to take attendance of individuals_
+_roll call ist a web-based tool to take attendance of individuals_
 
 ## Installation
 
-Role call uses python with django in a venv so
+Roll call uses python with django in a venv so
 ### Linux/Mac OS
 ```
  source bin/activate
