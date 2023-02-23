@@ -1,4 +1,0 @@
-Django~=4.1.7
-django-bootstrap4
-django-allauth
-django-simple-menu
