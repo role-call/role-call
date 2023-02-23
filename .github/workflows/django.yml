@@ -35,4 +35,4 @@ jobs:
       - name: Test with django test
         run: |
           cd backend
-          manage.py test
+          pipenv run ./manage.py test
