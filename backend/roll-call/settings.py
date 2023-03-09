@@ -37,26 +37,43 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap4',
+    'django_bootstrap5',
     'django.contrib.sites',
     'allauth',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.nextcloud',
     'allauth.account',
     'simple_menu',
-    'attendance'
+    'rest_framework',
+    "corsheaders",
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+    'rest_framework_simplejwt',
+    'attendance',
+    'debug_toolbar',
+    'ajax_datatable',
 ]
-
-SITE_ID = 1
+DEBUG = True
+MEDIA_URL = "/media/"
+MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
+SITE_ID = 2
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+SOCIALACCOUNT_PROVIDERS = {
+    'nextcloud': {
+        'SERVER': 'https://nxtcldspln.baff-space.org/',
+    }
+}
 ROOT_URLCONF = 'roll-call.urls'
 
 TEMPLATES = [
@@ -76,6 +93,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'roll-call.wsgi.application'
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+             'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
 
 
 # Database
@@ -109,8 +134,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
+from django.utils.translation import gettext_lazy as _
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ('de', _('German')),
+    ('en', _('English')),
+]
+
+LANGUAGE_CODE = 'de'
 
 TIME_ZONE = 'UTC'
 
@@ -118,7 +149,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -134,3 +169,32 @@ AUTHENTICATION_BACKENDS = [
     ]
 
 LOGIN_REDIRECT_URL = "index"
+SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    'TITLE': 'Roll Call API',
+    'DESCRIPTION': 'Attendance management',
+    'VERSION': '0.0.1',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+CSRF_USE_SESSIONS = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8080",
+]
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8080",
+]
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ALLOW_CREDENTIALS = True

@@ -1,0 +1,31 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+    <div class="container">
+
+<h1>{{ object.external_id }}</h1>
+    <div class="row">
+    {% for picture in object.picture.all %}
+<div class="col-lg-4">
+    <img class="img-fluid rounded " src="{{ picture.img.url  }}">
+
+</div>
+         <div class="col rounded " style="background: #9C27B0">
+    <p>{{ picture.created_at }}</p>
+{% endfor %}
+
+
+<p>{{ object.firstName }}</p>
+
+
+
+{% for status in object.status.all %}
+
+    <p >{{ status.status }}</p>
+
+{% endfor %}
+     </div>
+    </div>
+</div>
+{% endblock %}

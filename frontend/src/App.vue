@@ -1,26 +1,25 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
-
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+<script setup>
+import { RouterLink, RouterView } from 'vue-router';
+import { useAuthStore } from './store/auth';
+const authStore = useAuthStore();
+// authStore.getUser().then()
+// console.log();
 </script>
 
+<template>
+  <div class="app-container bg-light">
+    <nav v-if="authStore.user" class="navbar navbar-expand navbar-dark bg-dark">
+      <div class="navbar-nav">
+        <RouterLink to="/" class="nav-item nav-link">Home</RouterLink>
+        <a @click="authStore.logout()" class="nav-item nav-link">Logout</a>
+      </div>
+    </nav>
+    <div class="container pt-4 pb-4">
+      <RouterView />
+    </div>
+  </div>
+</template>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+/*@import '@/assets/base.css';*/
 </style>

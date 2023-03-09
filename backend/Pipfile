@@ -5,11 +5,19 @@ name = "pypi"
 
 [packages]
 django = "~=4.1.4"
-django-bootstrap4 = "*"
+django-bootstrap5 = "*"
 django-allauth = "*"
 django-simple-menu = "*"
 django-environ = "*"
-
+django-filter = "*"
+markdown = "*"
+djangorestframework = "*"
+drf-spectacular = {extras = ["sidecar"], version = "*"}
+django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
+django-debug-toolbar = "*"
+django-ajax-datatable = "*"
+pillow = "*"
 
 [dev-packages]
 pyflakes = "*"

@@ -1,7 +1,11 @@
-{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 {% load simple_menu %}
+{% load i18n %}
 {% bootstrap_css %}
-{% bootstrap_javascript jquery='full'%}
+{% bootstrap_javascript %}
+{% block extrastyle %}
+
+{% endblock extrastyle %}
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
@@ -37,5 +41,7 @@
         </main>
       </div>
     </div>
+{% block extrajs %}
+{% endblock extrajs %}
 </body>
 

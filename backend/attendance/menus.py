@@ -1,7 +1,7 @@
 from django.urls import reverse
 
 from simple_menu import Menu, MenuItem
-
+from django.utils.translation import gettext_lazy as _
 
 def profile_title(request):
     """Return a personalized title for our profile menu item
@@ -15,20 +15,20 @@ def profile_title(request):
 
 
 # this item will be shown to users who are not logged in
-Menu.add_item("user", MenuItem("Sign in",
+Menu.add_item("user", MenuItem(_("Sign in"),
                                reverse('account_login'),
                                icon='box-arrow-in-right',
                                check=lambda r: not r.user.is_authenticated))
 
 # this will only be shown to logged in users and also demonstrates how to use
 # a callable for the title to return a customized title for each request
-Menu.add_item("user", MenuItem("Statistics",
+Menu.add_item("user", MenuItem(_("Statistics"),
                                reverse("account_login"),
                                icon='incognito',
                                check=lambda r: r.user.is_superuser))
 
 # this only shows to superusers
-Menu.add_item("user", MenuItem("Create Occupant°",
+Menu.add_item("user", MenuItem(_("Create New Occupant"),
                                reverse("account_login"),
                                icon='incognito',
                                check=lambda r: r.user.is_superuser))
@@ -37,7 +37,7 @@ Menu.add_item("user", MenuItem(profile_title,
                                icon='person-circle',
                                check=lambda r: r.user.is_authenticated))
 
-Menu.add_item("user", MenuItem("Sign out",
+Menu.add_item("user", MenuItem(_("Sign out"),
                                reverse('account_logout'),
                                icon='box-arrow-right',
                                check=lambda r: r.user.is_authenticated))
