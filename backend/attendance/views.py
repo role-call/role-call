@@ -1,13 +1,21 @@
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
-from .models import Occupant,Occupant_Picture
+from .models import Occupant, Occupant_Picture
 from rest_framework import viewsets
 from rest_framework import permissions
 from django.views import generic
 from .serializers import UserSerializer, GroupSerializer, OccupantSerializer,Occupant_PictureSerializer
-# Create your views here.
 from rest_framework import generics
+from .forms import OccupantPictureForm
 
+from bootstrap_modal_forms.generic import (
+    BSModalLoginView,
+    BSModalFormView,
+    BSModalCreateView,
+    BSModalUpdateView,
+    BSModalReadView,
+    BSModalDeleteView
+)
 class IndexView(TemplateView):
     template_name = "index.html"
 
@@ -64,7 +72,7 @@ from django.urls import reverse_lazy
 
 class OccupantCreateView(CreateView):
     model = Occupant
-    fields = ['name','lastName']
+    fields = ['firstName','lastName']
 
 class OccupantUpdateView(UpdateView):
     slug_field = "external_id"
@@ -75,3 +83,17 @@ class OccupantDeleteView(DeleteView):
     slug_field = "external_id"
     model = Occupant
     success_url = reverse_lazy('occupants_list')
+
+
+class OccupantPictureCreateView(BSModalCreateView):
+    form_class = OccupantPictureForm
+    # template_name = 'attendance//occupant_picture_form.html'
+    success_messagge = "Success"
+    success_url = reverse_lazy('occupant_detail')
+    model = Occupant_Picture
+    # fields = ['occupant','img']
+
+class OccupantPictureUpdateView(UpdateView):
+    slug_field = "external_id"
+    model = Occupant_Picture
+    fields = ['img']

@@ -11,6 +11,7 @@ const authStore = useAuthStore();
     <nav v-if="authStore.user" class="navbar navbar-expand navbar-dark bg-dark">
       <div class="navbar-nav">
         <RouterLink to="/" class="nav-item nav-link">Home</RouterLink>
+        <RouterLink to="/barcode" class="nav-item nav-link">Wache</RouterLink>
         <a @click="authStore.logout()" class="nav-item nav-link">Logout</a>
       </div>
     </nav>

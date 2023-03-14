@@ -18,6 +18,8 @@ djangorestframework-simplejwt = "*"
 django-debug-toolbar = "*"
 django-ajax-datatable = "*"
 pillow = "*"
+pip = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 pyflakes = "*"

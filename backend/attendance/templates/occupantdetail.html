@@ -7,18 +7,23 @@
 <h1>{{ object.external_id }}</h1>
     <div class="row">
     {% for picture in object.picture.all %}
-<div class="col-lg-4">
+<div class="col-lg-4"><a href="{% url 'occupant_picture_update' picture.external_id %}">
     <img class="img-fluid rounded " src="{{ picture.img.url  }}">
-
+    </a>
 </div>
-         <div class="col rounded " style="background: #9C27B0">
+         <div class="col rounded " style="background: #eee">
     <p>{{ picture.created_at }}</p>
+{% empty %}
+    <div class="col-lg-4"><a href="{% url 'occupant_picture_create'  %}">
+        <p>{% translate "Upload Picture" %}</p>
+    </a>
+</div>
 {% endfor %}
 
-
+<a href="{% url 'occupant_update' occupant.external_id %}" >
 <p>{{ object.firstName }}</p>
-
-
+<p>{{ object.lastName }}</p>
+</a>
 
 {% for status in object.status.all %}
 

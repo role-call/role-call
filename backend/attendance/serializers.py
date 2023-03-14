@@ -13,13 +13,14 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ['url', 'name']
 
-class Occupant_PictureSerializer(serializers.HyperlinkedModelSerializer):
+class Occupant_PictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Occupant_Picture
-        fields = ['external_id','img','modified_at']
+        fields = ['external_id','imageType','img','modified_at']
 
-class OccupantSerializer(serializers.HyperlinkedModelSerializer):
-    picture = Occupant_PictureSerializer(read_only=True)
+class OccupantSerializer(serializers.ModelSerializer):
+    picture = Occupant_PictureSerializer(read_only=True, many=True)
+    # picture = serializers.CharField()
     class Meta:
         model = Occupant
         lookup_field = 'external_id'

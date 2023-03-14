@@ -42,9 +42,13 @@ class Room_x_Occupant(models.Model):
 class Occupant_Picture(models.Model):
     external_id = models.CharField(max_length=36, default=uuid.uuid4, editable=False)
     occupant = models.ForeignKey(Occupant, on_delete=models.CASCADE, related_name="picture")
+    imageType = models.CharField(max_length=10, default='profile', blank=True)
     img = models.ImageField(upload_to='images/', default=None)
     created_at = models.DateTimeField(default=now, blank=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse('occupant_detail', kwargs={'slug': self.occupant.external_id})
 
 class Occupant_Status(models.Model):
     occupant = models.ForeignKey(Occupant, on_delete=models.CASCADE, related_name="status")

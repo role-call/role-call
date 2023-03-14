@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-01 20:27+0000\n"
+"POT-Creation-Date: 2023-03-10 09:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: attendance/menus.py:18
 msgid "Sign in"
 msgstr "Einloggen"
@@ -25,60 +26,47 @@ msgstr "Einloggen"
 msgid "Statistics"
 msgstr "Statistik"
 
-#: attendance/menus.py:31
-msgid "Create New Occupant"
-msgstr "Neue BewohnerIn anlegen"
-
-#: attendance/menus.py:40
-msgid "Sign out"
-msgstr "Ausloggen"
-#: roll-call/settings.py:134
-msgid "German"
-msgstr ""
-
-#: roll-call/settings.py:135
-msgid "English"
-msgstr ""
-
-#: templates/account/login.html:6 templates/account/login.html:10
-#: templates/account/login.html:39
-msgid "Sign In"
-msgstr "Einloggen"
-
-#: templates/account/login.html:15
-#, python-format
-msgid ""
-"Please sign in with one\n"
-"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
-"up</a>\n"
-"for a %(site_name)s account and sign in below:"
-msgstr ""
-"Bitte wählen sie einen ihrer existierenden Dritt Account\n"
-"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
-"up</a>\n"
-"for a %(site_name)s account and sign in below:"
-
-#: templates/account/login.html:25
-msgid "or"
-msgstr "oder"
-
-#: templates/account/login.html:38
-msgid "Forgot Password?"
-msgstr "Passwort vergessen?"
-
-#: templates/attendance/occupants.html:56
+#: attendance/menus.py:30 attendance/templates/occupants.html:57
 msgid "Occupants"
 msgstr "BewohnerInnen"
 
-#: templates/attendance/occupants.html:60
+#: attendance/menus.py:36
+msgid "Create New Occupant"
+msgstr "Neue BewohnerIn anlegen"
+
+#: attendance/menus.py:46
+msgid "Sign out"
+msgstr "Ausloggen"
+
+#: attendance/templates/occupants.html:61
 msgid "First Name"
 msgstr "Vorname"
 
-#: templates/attendance/occupants.html:61
+#: attendance/templates/occupants.html:62
 msgid "Last Name"
 msgstr "Nachname"
 
-#: templates/attendance/occupants.html:62
+#: attendance/templates/occupants.html:63
 msgid "Last Updated"
 msgstr "Letzte Änderung "
 
+#~ msgid "Sign In"
+#~ msgstr "Einloggen"
+
+#, python-format
+#~ msgid ""
+#~ "Please sign in with one\n"
+#~ "of your existing third party accounts. Or, <a "
+#~ "href=\"%(signup_url)s\">sign up</a>\n"
+#~ "for a %(site_name)s account and sign in below:"
+#~ msgstr ""
+#~ "Bitte wählen sie einen ihrer existierenden Dritt Account\n"
+#~ "of your existing third party accounts. Or, <a "
+#~ "href=\"%(signup_url)s\">sign up</a>\n"
+#~ "for a %(site_name)s account and sign in below:"
+
+#~ msgid "or"
+#~ msgstr "oder"
+
+#~ msgid "Forgot Password?"
+#~ msgstr "Passwort vergessen?"

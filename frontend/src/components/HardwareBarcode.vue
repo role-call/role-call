@@ -1,15 +1,32 @@
 <template>
   <h1>Barcode Scanner</h1>
-<div>
-  {{barcodeStore.occupant?.firstName}}
+<div class="container">
+
+  <div class="row">
+  <div class="col-md" >
+  <img v-if="barcodeStore.occupant?.img" v-bind:src="barcodeStore.occupant?.img"  width="200" height="200">
+  </div><div class="col-md"><span>{{barcodeStore.occupant.firstName}}</span></div>
+
+
+
+    <!--  <b-progress :value="barcodeStore.progress" :max="barcodeStore.max" show-progress animated></b-progress>-->
+<!--  {{ // barcodeStore.occupant?.img}}-->
 <!--  {{barcodeStore.getOccupant()}}-->
-</div>
+  </div></div>
+  <div class="progress">
+    <div class="progress-bar" ></div>
+  </div>
 </template>
 
 <script>
+//v-bind:aria-valuenow="barcodeStore.progress"
 import {useBarcodeStore} from "../store/barcode";
+import lv-progressbar from 'lightvue/progressbar';
 export default {
   name: "HardwareBarcode",
+  components: {
+
+  },
   setup() {
     const barcodeStore = useBarcodeStore();
     return {barcodeStore};
@@ -24,7 +41,6 @@ export default {
       //usually scanners throw an 'Enter' key at the end of read
       if (e.keyCode === 13) {
         if(code.length > 10) {
-          console.log(code);
           barcodeStore.store(code);
           barcodeStore.getOccupant();
           /// code ready to use
@@ -48,6 +64,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style >
+  #progress-bar {
+    width: v-bind('barcodeStore.progress');
+  }
 </style>

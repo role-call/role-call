@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-01 21:06+0000\n"
+"POT-Creation-Date: 2023-03-10 09:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: roll-call/settings.py:134
+#: roll-call/settings.py:138
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
-#: roll-call/settings.py:135
+#: roll-call/settings.py:139
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: templates/account/login.html:6 templates/account/login.html:10
 #: templates/account/login.html:39
@@ -52,18 +52,14 @@ msgstr "oder"
 msgid "Forgot Password?"
 msgstr "Passwort vergessen?"
 
-#: templates/attendance/occupants.html:56
-msgid "Occupants"
-msgstr "BewohnerInnen"
+#~ msgid "Occupants"
+#~ msgstr "BewohnerInnen"
 
-#: templates/attendance/occupants.html:60
-msgid "First Name"
-msgstr "Vorname"
+#~ msgid "First Name"
+#~ msgstr "Vorname"
 
-#: templates/attendance/occupants.html:61
-msgid "Last Name"
-msgstr "Nachname"
+#~ msgid "Last Name"
+#~ msgstr "Nachname"
 
-#: templates/attendance/occupants.html:62
-msgid "Last Updated"
-msgstr "Letzte Änderung "
+#~ msgid "Last Updated"
+#~ msgstr "Letzte Änderung "

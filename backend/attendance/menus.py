@@ -22,16 +22,22 @@ Menu.add_item("user", MenuItem(_("Sign in"),
 
 # this will only be shown to logged in users and also demonstrates how to use
 # a callable for the title to return a customized title for each request
-Menu.add_item("user", MenuItem(_("Statistics"),
-                               reverse("account_login"),
+# Menu.add_item("user", MenuItem(_("Statistics"),
+#                                reverse("account_login"),
+#                                icon='incognito',
+#                                check=lambda r: r.user.is_superuser))
+
+Menu.add_item("user", MenuItem(_("Occupants"),
+                               reverse("occoupants_list"),
                                icon='incognito',
                                check=lambda r: r.user.is_superuser))
 
 # this only shows to superusers
 Menu.add_item("user", MenuItem(_("Create New Occupant"),
-                               reverse("account_login"),
+                               reverse("occupant_add"),
                                icon='incognito',
                                check=lambda r: r.user.is_superuser))
+
 Menu.add_item("user", MenuItem(profile_title,
                                reverse('account_logout'),
                                icon='person-circle',
