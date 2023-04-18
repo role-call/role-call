@@ -55,3 +55,7 @@ class Occupant_Status(models.Model):
     status = models.CharField(max_length=20)
     modified_at = models.DateTimeField(auto_now=True)
 
+class Occupant_Type(models.Model):
+    external_id = models.CharField(max_length=36, default=uuid.uuid4, editable=False)
+    installation = models.ForeignKey(Installation, on_delete=models.CASCADE)
+    name = models

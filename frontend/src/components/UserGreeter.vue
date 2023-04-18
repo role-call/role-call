@@ -1,5 +1,5 @@
 <template>
-  <h2>Welcome, {{ userStore?.user?.user }}</h2>
+  <h2>BewohnerInnen {{ userStore?.user?.user }}</h2>
 </template>
 
 <script>

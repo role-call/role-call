@@ -28,7 +28,7 @@ Menu.add_item("user", MenuItem(_("Sign in"),
 #                                check=lambda r: r.user.is_superuser))
 
 Menu.add_item("user", MenuItem(_("Occupants"),
-                               reverse("occoupants_list"),
+                               reverse("occupants_list"),
                                icon='incognito',
                                check=lambda r: r.user.is_superuser))
 

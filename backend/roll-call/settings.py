@@ -1,3 +1,5 @@
+import os.path
+import environ
 """
 Django settings for roll-call project.
 
@@ -11,21 +13,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os.path
+from django.utils.translation import gettext_lazy as _
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qq-hz-x(-o8(q__hebbbpdw=!ujdcd2*et^v6ug1_$y!(xf_j#'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+SECRET_KEY = env('SECRET_KEY')
+# False if not in os.environ because of casting above
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 # Application definition
 
@@ -52,16 +57,23 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'ajax_datatable',
     'dj_rest_auth',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    "django_htmx"
+
 ]
-DEBUG = True
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
-SITE_ID = 2
+
+MEDIA_URL = env("MEDIA_ROOT", default="/media/")
+MEDIA_ROOT = os.path.join(BASE_DIR, env('MEDIA_ROOT', default="media/"))
+STATIC_URL = env('STATIC_URL', default='static/')
+STATIC_ROOT = BASE_DIR / env('STATIC_ROOT', default='static')
+
+SITE_ID = env.int("SITE_ID")
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -69,10 +81,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 SOCIALACCOUNT_PROVIDERS = {
     'nextcloud': {
-        'SERVER': 'https://nxtcldspln.baff-space.org/',
+        'SERVER': env('NEXTCLOUD_URL'),
     }
 }
 ROOT_URLCONF = 'roll-call.urls'
@@ -106,12 +119,10 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default':  env.db()
 }
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -132,30 +143,25 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
-from django.utils.translation import gettext_lazy as _
+
 
 LANGUAGES = [
     ('de', _('German')),
     ('en', _('English')),
 ]
 
-LANGUAGE_CODE = 'de'
+LANGUAGE_CODE = env('LANGUAGE_CODE', default='de')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env('TIME_ZONE', default='UTC')
 
-USE_I18N = True
+USE_I18N = env('USE_I18N ', default=True)
 
-USE_TZ = True
+USE_TZ = env('USE_TZ', default=True)
 
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
+INTERNAL_IPS = env.list("INTERNAL_IPS")
 
-STATIC_URL = 'static/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -177,25 +183,12 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
-CSRF_USE_SESSIONS = True
-CSRF_TRUSTED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:8080",
-]
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:8080",
-]
-CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
-CORS_ALLOW_CREDENTIALS = True
+CSRF_USE_SESSIONS = env('CSRF_USE_SESSIONS', default=True)
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
+CORS_ALLOWED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
+CORS_EXPOSE_HEADERS = env.list("CORS_EXPOSE_HEADERS", default=['Content-Type', 'X-CSRFToken'])
+
+CORS_ALLOW_CREDENTIALS = env('CORS_ALLOW_CREDENTIALS', default=True)
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'jwt-auth',

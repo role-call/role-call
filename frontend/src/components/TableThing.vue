@@ -1,15 +1,21 @@
 <script  setup>
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
+import DataTablesLib from 'datatables.net';
 import {useOccupantStore} from "@/store/occupantstore";
+import 'datatables.net-select';
+import 'datatables.net-buttons';
+import 'datatables.net-buttons/js/buttons.html5';
+import jszip from 'jszip';
+import pdfmake from 'pdfmake';
 
 
 DataTable.use(DataTablesCore);
+DataTablesLib.Buttons.jszip(jszip);
+DataTablesLib.Buttons.pdfMake(pdfmake);
 
-const data = [
-  [1, 2],
-  [3, 4],
-];
+useOccupantStore().getOccupants();
+const data = useOccupantStore().occupants;
 </script>
 <script>
 
@@ -20,19 +26,24 @@ const data = [
 export default {
   name : "TableThing",
   setup() {
-// return {occupantStore};
-}
+    const occupantStore = useOccupantStore();
+    return {occupantStore};
+  },
+  mounted() {
+
+  }
 }
 </script>
 
 
 
 <template>
+  <h2>BewohnerInnen Übersicht</h2>
   <DataTable :data="data" class="display">
     <thead>
     <tr>
-      <th>A</th>
-      <th>B</th>
+      <th>Vorname</th>
+      <th>Nachname</th>
     </tr>
     </thead>
   </DataTable>

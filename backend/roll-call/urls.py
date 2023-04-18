@@ -48,6 +48,5 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
 
 ]
-if settings.DEBUG:
-        urlpatterns += static(settings.MEDIA_URL,
-                              document_root=settings.MEDIA_ROOT)
+#if settings.DEBUG:
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

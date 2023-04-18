@@ -20,6 +20,11 @@ django-ajax-datatable = "*"
 pillow = "*"
 pip = "*"
 dj-rest-auth = "*"
+django-htmx = "*"
+django-bootstrap-form = "*"
+django-bootstrap-modal-forms = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 pyflakes = "*"

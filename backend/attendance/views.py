@@ -73,11 +73,17 @@ from django.urls import reverse_lazy
 class OccupantCreateView(CreateView):
     model = Occupant
     fields = ['firstName','lastName']
+    template_name = 'attendance/occupant_new_form.html'
+    success_url = reverse_lazy('occupants_list')
+
+
 
 class OccupantUpdateView(UpdateView):
     slug_field = "external_id"
     model = Occupant
     fields = ['firstName','lastName']
+    success_url = reverse_lazy('occupants_list')
+
 
 class OccupantDeleteView(DeleteView):
     slug_field = "external_id"

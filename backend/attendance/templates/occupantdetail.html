@@ -1,5 +1,9 @@
 {% extends '_base.html' %}
+{% load django_htmx %}
 {% load static %}
+{% block extrajs %}
+<script src="{% static 'htmx.min.js.gz' %}" defer></script>
+{% endblock %}
 {% load i18n %}
 {% block content %}
     <div class="container">
@@ -7,30 +11,60 @@
 <h1>{{ object.external_id }}</h1>
     <div class="row">
     {% for picture in object.picture.all %}
-<div class="col-lg-4"><a href="{% url 'occupant_picture_update' picture.external_id %}">
+<div class="col-lg-4">
     <img class="img-fluid rounded " src="{{ picture.img.url  }}">
+    <button hx-get="{% url 'occupant_picture_update' picture.external_id %}" hx-target="#dialog">&Auml;ndern</button>
     </a>
 </div>
          <div class="col rounded " style="background: #eee">
     <p>{{ picture.created_at }}</p>
 {% empty %}
-    <div class="col-lg-4"><a href="{% url 'occupant_picture_create'  %}">
+    <div class="col-lg-4"><a href="{% url 'occupant_picture_add'  %}">
         <p>{% translate "Upload Picture" %}</p>
     </a>
 </div>
 {% endfor %}
 
-<a href="{% url 'occupant_update' occupant.external_id %}" >
+
 <p>{{ object.firstName }}</p>
 <p>{{ object.lastName }}</p>
-</a>
-
+        <button hx-get="{% url 'occupant_update' occupant.external_id %}" hx-target="#dialog">&Auml;ndern</button>
 {% for status in object.status.all %}
 
     <p >{{ status.status }}</p>
+
+  Add a movie
+</button>
 
 {% endfor %}
      </div>
     </div>
 </div>
+    <div id="modal" class="modal fade">
+  <div id="dialog" class="modal-dialog" hx-target="this"></div>
+</div>
+<script>
+window.onload = function () {
+    const modal = new bootstrap.Modal(document.getElementById("modal"))
+
+
+    htmx.on("htmx:afterSwap", (e) => {
+        // Response targeting #dialog => show the modal
+        if (e.detail.target.id == "dialog") {
+            modal.show()
+        }
+    });
+    htmx.on("htmx:beforeSwap", (e) => {
+        // Empty response targeting #dialog => hide the modal
+        if (e.detail.target.id == "dialog" && !e.detail.xhr.response) {
+            modal.hide()
+            e.detail.shouldSwap = true
+        }
+    })
+    htmx.on("hidden.bs.modal", () => {
+        document.getElementById("dialog").innerHTML = ""
+    })
+};
+</script>
+    {% django_htmx_script %}
 {% endblock %}

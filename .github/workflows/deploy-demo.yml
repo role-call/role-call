@@ -1,0 +1,29 @@
+name: Create envfile
+
+on: [ push ]
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    environment: demo
+    steps:
+      - uses: actions/checkout@v2
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_DEBUG: false
+          envkey_SITE_ID: 2
+          envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          directory: backend
+          file_name: .env
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEMO_SSH_PRIVATE }}
+          known_hosts: unnecessary
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
+      - name: Deploy with rsync
+        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./backend/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ansible/
