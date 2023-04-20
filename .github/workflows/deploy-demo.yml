@@ -20,6 +20,9 @@ jobs:
           envkey_NEXTCLOUD_URL: "demo-cloud.baff-business.com/"
           envkey_DEFAULT_DOMAIN: "demo.baff-business.com"
           envkey_ALLOWED_HOSTS: "*"
+          envkey_EMAIL_HOST: "mailhog"
+          envkey_EMAIL_PORT: "1025"
+          envkey_EMAIL_HOST_USER: "roll-call@baff-space.org"
           directory: backend
           file_name: .env
       - name: Install SSH Key

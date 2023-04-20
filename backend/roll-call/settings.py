@@ -37,6 +37,7 @@ DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 USE_X_FORWARDED_HOST = True
 # Application definition
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_DOMAIN = env.str("DEFAULT_DOMAIN", default="localhost")
 INSTALLED_APPS = [
     'django.contrib.admin',
