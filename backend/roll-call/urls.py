@@ -13,7 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import re
+
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import include, path
 from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
@@ -48,5 +51,10 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
 
 ]
-#if settings.DEBUG:
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# i hope it's clear that this needs to go at the bottom here otherwise we may have routes without the prefix
+if settings.URL_PREFIX:
+    urlpatterns = [path(f'{settings.URL_PREFIX}/', include(urlpatterns))]
+
+

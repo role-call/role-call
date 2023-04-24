@@ -110,7 +110,7 @@ TEMPLATES = [
         },
     },
 ]
-
+URL_PREFIX = env.str('URL_PREFIX', default='backend')
 WSGI_APPLICATION = 'roll-call.wsgi.application'
 REST_FRAMEWORK = {
     # YOUR SETTINGS
