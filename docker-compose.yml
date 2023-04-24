@@ -13,7 +13,7 @@ services:
       proxy:
   roll-call-frontend:
     image: "callroll/frontend"
-    build: backend/
+    build: frontend/
     container_name: "roll-call-frontend"
     labels:
       - "traefik.enable=true"
