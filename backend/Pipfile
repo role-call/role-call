@@ -25,6 +25,7 @@ django-bootstrap-form = "*"
 django-bootstrap-modal-forms = "*"
 gunicorn = "*"
 whitenoise = "*"
+psycopg-binary = "*"
 
 [dev-packages]
 pyflakes = "*"

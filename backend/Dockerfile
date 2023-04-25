@@ -29,7 +29,6 @@ ENV PATH="/.venv/bin:$PATH"
 
 # copy project
 COPY . .
-#the standard 127.0.0.1 listen address for the devserver would break with docker.
 
 RUN chmod a+x docker/entrypoint.sh
 RUN ./.venv/bin/python3 manage.py collectstatic --noinput
