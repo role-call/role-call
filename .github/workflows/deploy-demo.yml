@@ -29,6 +29,8 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_POSTGRES_USER: "${{ secrets.POSTGRES_USER }}"
+          envkey_POSTGRES_DB: "${{ secrets.POSTGRES_DB }}"
+          envkey_POSTGRES_PASSWORD: "${{ secrets.POSTGRES_PASSWORD }}"
           directory: .
           file_name: db.env
       - name: Install SSH Key
