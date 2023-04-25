@@ -31,6 +31,7 @@ ENV PATH="/.venv/bin:$PATH"
 COPY . .
 
 RUN chmod a+x docker/entrypoint.sh
+RUN ./.venv/bin/python3 pip install psycopg2-binary
 RUN ./.venv/bin/python3 manage.py collectstatic --noinput
 
 ENTRYPOINT ["docker/entrypoint.sh"]
