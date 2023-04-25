@@ -9,6 +9,9 @@ services:
     build: backend/
     env_file:
       - backend/.env
+    volumes:
+      - roll_call_media:/backend/media
+      - roll_call_static:/backend/static
     container_name: "roll-call-backend"
     labels:
       - "traefik.enable=true"
@@ -22,6 +25,9 @@ services:
     restart: always
     image: "callroll/frontend"
     build: frontend/
+    volumes:
+      - roll_call_media:/usr/share/nginx/html/media
+      - roll_call_static:/usr/share/nginx/html/static
     container_name: "roll-call-frontend"
     labels:
       - "traefik.enable=true"
@@ -35,6 +41,8 @@ services:
     image: postgres
     container_name: "roll-call-db"
     restart: always
+    volumes:
+      - roll_call_db_data:/var/lib/postgresql/data/
     env_file:
       - db.env
     networks:
@@ -42,3 +50,6 @@ services:
 networks:
   proxy:
     external: true
+volumes:
+  roll_call_db_data:
+  roll_call_gunicorn_cant_serve:

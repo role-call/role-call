@@ -29,10 +29,11 @@ ENV PATH="/.venv/bin:$PATH"
 
 # copy project
 COPY . .
-
+RUN mkdir -p  media static
 RUN chmod a+x docker/entrypoint.sh
 RUN ./.venv/bin/pip install psycopg2-binary
 RUN ./.venv/bin/python3 manage.py collectstatic --noinput
+
 
 ENTRYPOINT ["docker/entrypoint.sh"]
 CMD ./.venv/bin/gunicorn  -b 0.0.0.0:8000 roll-call.wsgi

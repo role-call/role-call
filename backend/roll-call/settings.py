@@ -67,10 +67,10 @@ INSTALLED_APPS = [
 
 ]
 
-MEDIA_URL = env("MEDIA_ROOT", default="/media/")
-MEDIA_ROOT = os.path.join(BASE_DIR, env('MEDIA_ROOT', default="media/"))
+MEDIA_URL = env("MEDIA_URL", default="/media/")
+MEDIA_ROOT = env('MEDIA_ROOT', default=os.path.join(BASE_DIR, "media/"))
 STATIC_URL = env('STATIC_URL', default='static/')
-STATIC_ROOT = BASE_DIR / env('STATIC_ROOT', default='static')
+STATIC_ROOT = env('STATIC_ROOT', default=os.path.join(BASE_DIR, "static/"))
 
 SITE_ID = env.int("SITE_ID")
 MIDDLEWARE = [
