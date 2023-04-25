@@ -9,6 +9,13 @@ services:
     env_file:
       - backend/.env
     container_name: "roll-call-backend"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.roll-backend.rule=Host(`demo.baff-business.com`) && PathPrefix(`/backend`)"
+      - "traefik.http.routers.roll-backend.tls=true"
+      - "traefik.http.routers.roll-backend.entrypoints=websecure"
+      - "traefik.http.routers.roll-backend.tls.certresolver=myresolver"
+
     networks:
       proxy:
   roll-call-frontend:
@@ -17,7 +24,7 @@ services:
     container_name: "roll-call-frontend"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.roll-frontend.rule=Host(`demo.baff-business.com`)"
+      - "traefik.http.routers.roll-frontend.rule=Host(`demo.baff-business.com`) && ! PathPrefix(`/backend`)"
       - "traefik.http.routers.roll-frontend.tls=true"
       - "traefik.http.routers.roll-frontend.entrypoints=websecure"
       - "traefik.http.routers.roll-frontend.tls.certresolver=myresolver"
