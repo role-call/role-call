@@ -43,6 +43,6 @@ jobs:
       - name: Ensure deploy script executable
         run: chmod +x utils/deploy-stack.sh
       - name: Deploy with rsync
-        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" docker-compose.yml ./backend ./utils ./frontend ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ansible/
+        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" db.env docker-compose.yml ./backend ./utils ./frontend ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ansible/
       - name: docker compose deploy
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} /home/ansible/utils/deploy-stack.sh
