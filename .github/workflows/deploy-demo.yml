@@ -8,7 +8,7 @@ jobs:
     environment: demo
     steps:
       - uses: actions/checkout@v3
-      - name: write backend envfile
+      - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DEBUG: false
@@ -25,12 +25,11 @@ jobs:
           envkey_EMAIL_HOST_USER: "roll-call@baff-space.org"
           directory: backend
           file_name: .env
-      - name: write db envfile
+      - name: Make envfile2
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          envkey_POSTGRES_USER: "${{ secrets.POSTGRES_USER }}"
+          directory: .
           file_name: db.env
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
