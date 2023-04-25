@@ -52,4 +52,5 @@ networks:
     external: true
 volumes:
   roll_call_db_data:
-  roll_call_gunicorn_cant_serve:
+  roll_call_static:
+  roll_call_media:
