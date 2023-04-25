@@ -4,6 +4,7 @@ services:
 
 
   roll-call-backend:
+    restart: always
     image: "callroll/backend"
     build: backend/
     env_file:
@@ -15,10 +16,10 @@ services:
       - "traefik.http.routers.roll-backend.tls=true"
       - "traefik.http.routers.roll-backend.entrypoints=websecure"
       - "traefik.http.routers.roll-backend.tls.certresolver=myresolver"
-
     networks:
       proxy:
   roll-call-frontend:
+    restart: always
     image: "callroll/frontend"
     build: frontend/
     container_name: "roll-call-frontend"
@@ -30,7 +31,14 @@ services:
       - "traefik.http.routers.roll-frontend.tls.certresolver=myresolver"
     networks:
       proxy:
-
+  roll-call-db:
+    image: postgres
+    container_name: "roll-call-db"
+    restart: always
+    env_file:
+      - db.env
+    networks:
+      proxy:
 networks:
   proxy:
     external: true
