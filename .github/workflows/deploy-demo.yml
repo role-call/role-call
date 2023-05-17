@@ -14,7 +14,7 @@ jobs:
           envkey_DEBUG: false
           envkey_SITE_ID: 23
           envkey_SECRET_KEY: "insecure"
-          envkey_DATABASE_URL: "psql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@roll-call-db:5432/${{ secrets.POSTGRES_DB }}"
+          envkey_DATABASE_URL: "psql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@roll-call-db:543.2/${{ secrets.POSTGRES_DB }}"
           envkey_INTERNAL_IPS: "127.0.0.1"
           envkey_CSRF_TRUSTED_ORIGINS: "http://localhost:8080,http://localhost:8000,http://127.0.0.1:8000,http://127.0.0.1:8080,https://demo.baff-business.com,https://demo-login.baff-business.com"
           envkey_NEXTCLOUD_URL: "demo-cloud.baff-business.com/"
