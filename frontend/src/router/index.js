@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
-
-import { useAuthStore } from '../store/auth';
-import  HomeView  from '../views/HomeView.vue';
 import  LoginView  from '@/views/LoginView.vue';
 import BarcodeView from "@/views/BarcodeView.vue";
+import OccupantView from "@/views/OccupantView.vue";
+import HomeView from "@/views/HomeView.vue";
+import {createRouter, createWebHistory} from "vue-router";
+import {useAuthStore} from "@/store/auth";
 export const router = createRouter({
   history: createWebHistory(),
   linkActiveClass: 'active',
@@ -11,7 +11,7 @@ export const router = createRouter({
     { path: '/', component: HomeView },
     { path: '/login', component: LoginView },
     { path: '/barcode', component: BarcodeView },
-
+  { path: '/i/:installationId/occupant/:externalId', component: OccupantView , name:"detail"},
   ]
 });
 

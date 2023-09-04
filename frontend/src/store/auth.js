@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {fetchWrapper} from '../helpers/fetchwrapper';
 import {router} from '@/router'
+
 export const useAuthStore = defineStore("user", {
     state: () => ({
 
@@ -16,13 +17,13 @@ export const useAuthStore = defineStore("user", {
         //     this.user = user;
         // },
         async signUp(login, password) {
-            const res = await fetchWrapper("http://localhost:8000/accounts/register",
+            const res = await fetchWrapper(import.meta.env.VITE_API_BASE+"/accounts/register",
                 {login, password})
             const user = await res.json()
             this.user = user;
         },
         async signIn(login, password) {
-            const user = await fetchWrapper.post("http://localhost:8000/api/token/", {
+            const user = await fetchWrapper.post(import.meta.env.VITE_API_BASE + "/api/token/", {
                 username: login,
                 password: password
             });

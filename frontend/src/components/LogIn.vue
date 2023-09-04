@@ -1,11 +1,10 @@
 <template>
-  <form @submit.prevent="logIn">
-    <label>Username</label>
-    <input type="text" v-model="login" />
-    <label>Password</label>
-    <input type="password" v-model="password" />
-    <button type="submit">Login</button>
-  </form>
+  <v-form @submit.prevent="logIn">
+    <v-text-field v-model="login" label="Username" />
+
+    <v-text-field type="password" v-model="password" label="Password" />
+    <v-btn type="submit">Login</v-btn>
+  </v-form>
 </template>
 
 <script>

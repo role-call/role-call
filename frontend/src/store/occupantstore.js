@@ -3,18 +3,16 @@ import { defineStore } from 'pinia'
 import {fetchWrapper} from "@/helpers/fetchwrapper";
 
 export const useOccupantStore = defineStore('useOccupantStore', {
-    state: () => ({  occupants: [] }),
+    state: () => ({  occupant: {}, externalId: ""}),
     actions: {
 
-        async getOccupants() {
-            const occupantsResp = await fetchWrapper.get("http://localhost:8000/occupanteros/");
-            let occupants = [];
+        async getOccupant(installationId,externalId) {
+            this.externalId = externalId;
+            const occupantsResp = await fetchWrapper.get(import.meta.env.VITE_API_BASE+"/i/"+installationId+"/occupants/"+externalId);
             console.log(occupantsResp);
+            this.occupant =  occupantsResp;
+        },
 
-            this.occupants =  occupantsResp.forEach(e=>{occupants.push([e.firstName, e.lastName])});
-            this.occupants = occupants;
-            console.log(this.occupants);
-        }
     },
 
 })
