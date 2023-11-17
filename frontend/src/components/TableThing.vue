@@ -1,33 +1,27 @@
-<script  setup>
 
-
-
-
-</script>
 <script>
 
+
+import OccupantDialog from "@/components/OccupantDialog.vue";
 import {useInstallationStore} from "@/store/installationstore";
-
-
-
 export default {
-  name : "TableThing",
+  name: "TableThing",
   setup() {
-            const installationStore = useInstallationStore();
-            installationStore.getOccupants();
-            return {installationStore};
+    const installationStore = useInstallationStore();
+    installationStore.getOccupants();
+    return {installationStore};
   },
   mounted() {
   },
+  components: {OccupantDialog}
 
 
 }
 </script>
 
 
-
 <template>
-    <v-card
+  <v-card
     class="mx-auto"
     max-width="90%"
   >
@@ -40,23 +34,27 @@ export default {
     <v-virtual-scroll
       :items="installationStore.occupants"
 
-      height="320"
+      height="1000"
       item-height="48"
     >
-      <template v-slot:default="{item}" >
+      <template v-slot:default="{item}">
         <v-list-item
         >
           <template v-slot:prepend>
-            <v-icon class="bg-primary">mdi-account</v-icon>
+            <img v-if="item.picture[0]" v-bind:src="item.picture[0]?.img"
+          class="profile" style="{max-width: 200px }"
+          >
+            <v-icon v-else class="profile"  >mdi-account</v-icon>
           </template>
-          <v-list-item-title><router-link :to="{name:'detail', params: {installationId: installationStore.chosenInstallation, externalId: item.external_id}}">
-            {{ item.firstName }}</router-link></v-list-item-title>
+          <v-list-item-title>
+            <router-link
+              :to="{name:'detail', params: {installationId: installationStore.chosenInstallation, externalId: item.external_id}}">
+              {{ item.firstName }} - {{ item.lastName }}
+            </router-link>
+          </v-list-item-title>
           <template v-slot:append>
-            <v-btn
-              icon="mdi-pencil"
-              size="x-small"
-              variant="tonal"
-            ></v-btn>
+            <OccupantDialog :installation="installationStore.chosenInstallation"  :occupant="item.external_id" />
+
           </template>
         </v-list-item>
       </template>
@@ -64,7 +62,11 @@ export default {
   </v-card>
 </template>
 <style>
+.profile {
 
+  max-width: 200px;
+  min-width: 200px;
+}
 </style>
 
 

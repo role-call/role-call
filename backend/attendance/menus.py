@@ -2,7 +2,7 @@ from django.urls import reverse
 
 from simple_menu import Menu, MenuItem
 from django.utils.translation import gettext_lazy as _
-
+from models import Installation
 def profile_title(request):
     """Return a personalized title for our profile menu item
     """
@@ -20,7 +20,7 @@ Menu.add_item("user", MenuItem(_("Sign in"),
                                icon='box-arrow-in-right',
                                check=lambda r: not r.user.is_authenticated))
 
-# this will only be shown to logged in users and also demonstrates how to use
+# this will only be shown to logged-in users and also demonstrates how to use
 # a callable for the title to return a customized title for each request
 # Menu.add_item("user", MenuItem(_("Statistics"),
 #                                reverse("account_login"),

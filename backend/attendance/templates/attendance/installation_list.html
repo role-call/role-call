@@ -1,0 +1,24 @@
+
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+{% language 'de' %}
+<table>
+    <thead>
+    <tr>
+        <th>link</th>
+        <th>name</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    {% for installation in installations %}
+        <tr><td>{{ installation.external_id }}</td>
+            <td>{{ installation.name }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+    {% endlanguage %}
+{% endblock %}

@@ -1,12 +1,14 @@
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
-from .models import Occupant, Occupant_Picture
+from .models import Occupant, Occupant_Picture, Installation
 from rest_framework import viewsets
 from rest_framework import permissions
 from django.views import generic
-from .serializers import UserSerializer, GroupSerializer, OccupantSerializer,Occupant_PictureSerializer
+from .serializers import UserSerializer, GroupSerializer, OccupantSerializer, Occupant_PictureSerializer, \
+    InstallationSerializer
 from rest_framework import generics
 from .forms import OccupantPictureForm
+import logging
 
 from bootstrap_modal_forms.generic import (
     BSModalLoginView,
@@ -19,13 +21,22 @@ from bootstrap_modal_forms.generic import (
 class IndexView(TemplateView):
     template_name = "index.html"
 
+class InstallationsListView(generic.ListView):
+    context_object_name = 'installations'
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Installation.objects.all()
+
+    permission_classes = [permissions.IsAuthenticated]
+
 class OccupantsListView(generic.ListView):
     template_name = "occupants.html"
     context_object_name = 'occupants'
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return Occupant.objects.all()
+        installation = self.kwargs["installation"]
+
+        return Occupant.objects.filter(installation__occupant=installation)
     permission_classes = [permissions.IsAuthenticated]
 class OccupantDetailView(generic.DetailView):
     slug_field = "external_id"
@@ -62,6 +73,11 @@ class OccupantDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
 class OccupantPictureViewSet(viewsets.ModelViewSet):
     lookup_field = "external_id"
     queryset = Occupant_Picture.objects.all()
+    def get_queryset(self):
+        installation = self.kwargs["installation"]
+
+        queryset = self.queryset
+        return queryset.filter(occupant__installation__occupant=installation)
     serializer_class = Occupant_PictureSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -103,3 +119,26 @@ class OccupantPictureUpdateView(UpdateView):
     slug_field = "external_id"
     model = Occupant_Picture
     fields = ['img']
+
+
+class OccupantViewSet(viewsets.ModelViewSet):
+    logger = logging.getLogger(__name__)
+    queryset = Occupant.objects
+    def get_queryset(self):
+        installation = self.kwargs["installation"]
+        logger = logging.getLogger(__name__)
+        logger.warning(msg=installation)
+        queryset = self.queryset
+        return queryset.filter(installation__external_id=installation)
+    serializer_class = OccupantSerializer
+    lookup_field = 'external_id'
+    permission_classes = [permissions.IsAuthenticated]
+class InstallationViewSet(viewsets.ModelViewSet):
+    logger = logging.getLogger(__name__)
+    queryset = Installation.objects
+
+    serializer_class = InstallationSerializer
+    lookup_field = 'external_id'
+    permission_classes = [permissions.IsAuthenticated]
+
+

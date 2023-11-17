@@ -1,8 +1,8 @@
 <template>
   <v-form @submit.prevent="logIn">
-    <v-text-field v-model="login" label="Username" />
+    <v-text-field v-model="login" label="Username" name="username" />
 
-    <v-text-field type="password" v-model="password" label="Password" />
+    <v-text-field type="password" v-model="password" label="Password" name="password" />
     <v-btn type="submit">Login</v-btn>
   </v-form>
 </template>

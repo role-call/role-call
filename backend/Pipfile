@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "~=4.1.4"
+django = "~=4.1.10"
 django-bootstrap5 = "*"
 django-allauth = "*"
 django-simple-menu = "*"
@@ -27,6 +27,9 @@ gunicorn = "*"
 whitenoise = "*"
 psycopg-binary = "*"
 pytest-django = "*"
+install = "*"
+pyyaml = "*"
+uritemplate = "*"
 
 [dev-packages]
 pyflakes = "*"

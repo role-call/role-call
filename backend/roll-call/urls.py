@@ -31,8 +31,9 @@ from django.conf.urls.static import static
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'occupanteros', views.OccupantViewSet)
-router.register(r'occupanteros_pictures', views.OccupantPictureViewSet)
+router.register(r'i', views.InstallationViewSet)
+router.register(r'i/(?P<installation>.+)/occupants', views.OccupantViewSet)
+router.register(r'i/(?P<installation>.+)/occupants/pictures', views.OccupantPictureViewSet)
 
 
 urlpatterns = [
@@ -51,10 +52,10 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
 
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 # i hope it's clear that this needs to go at the bottom here otherwise we may have routes without the prefix
 if settings.URL_PREFIX:
     urlpatterns = [path(f'{settings.URL_PREFIX}/', include(urlpatterns))]
 
-
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

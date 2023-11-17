@@ -21,6 +21,7 @@ class Occupant(models.Model):
     lastName = models.CharField(max_length=200)
     created_at = models.DateTimeField(default=now, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
+    installation = models.ForeignKey(Installation, on_delete=models.CASCADE)
     def get_absolute_url(self):
         return reverse('occupant_detail', kwargs={'slug': self.external_id})
 

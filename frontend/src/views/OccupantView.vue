@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-      <OccupantDisplayer/>
+      <OccupantDisplayer :installation-id="this.$route.params.installationId" :occupant-id="this.$route.params.externalId"/>
   </div>
 </template>
 <script>

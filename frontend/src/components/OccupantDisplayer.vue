@@ -31,14 +31,18 @@
 </script>
 <script>
 import {useOccupantStore} from "@/store/occupantstore";
+
 export default {
-  setup() {
+  props: ["installationId", "occupantId"],
+  setup(props) {
     const occupantStore = useOccupantStore();
+    occupantStore.installId=props.installationId;
+    occupantStore.externalId= props.occupantId;
     return { occupantStore };
   },
   mounted() {
      const occupantStore = useOccupantStore();
-    occupantStore?.getOccupant(this.$route.params.installationId,this.$route.params.externalId);
+    occupantStore?.getOccupant(occupantStore.installId,occupantStore.externalId);
   }
 };
 </script>

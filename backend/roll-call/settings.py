@@ -1,4 +1,6 @@
 import os.path
+from datetime import timedelta
+
 import environ
 """
 Django settings for roll-call project.
@@ -67,7 +69,7 @@ INSTALLED_APPS = [
 
 ]
 
-MEDIA_URL = env("MEDIA_URL", default="/media/")
+MEDIA_URL = env("MEDIA_URL", default="backend/media/")
 MEDIA_ROOT = env('MEDIA_ROOT', default=os.path.join(BASE_DIR, "media/"))
 STATIC_URL = env('STATIC_URL', default='static/')
 STATIC_ROOT = env('STATIC_ROOT', default=os.path.join(BASE_DIR, "static/"))
@@ -132,18 +134,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+   #  {
+   #      'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+   #  },
+   #  {
+   #      'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+   #  },
+   #  {
+   #      'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+   #  },
+   #  {
+   #      'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+   # },
 ]
 
 # Internationalization
@@ -197,4 +199,8 @@ CORS_ALLOW_CREDENTIALS = env('CORS_ALLOW_CREDENTIALS', default=True)
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'jwt-auth',
+}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=2),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
 }

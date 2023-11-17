@@ -30,11 +30,16 @@ class OccupantSerializer(serializers.ModelSerializer):
 
         fields = ['external_id', 'firstName', 'lastName','picture', 'created_at', 'deleted_at']
 
-class InstallationSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Installation
-        fields = ['external_id', 'name','prefs']
-class FacilitySerializer(serializers.HyperlinkedModelSerializer):
+
+class FacilitySerializer(serializers.ModelSerializer):
+    occupant = OccupantSerializer(read_only=True, many=True)
     class Meta:
         model = Facility
-        fields = ['external_id', 'name','installation']
+        lookup_field = 'external_id'
+        fields = ['external_id','occupant', 'name','installation']
+class InstallationSerializer(serializers.ModelSerializer):
+    facility = FacilitySerializer(read_only=True, many=True)
+    class Meta:
+        model = Installation
+        lookup_field = 'external_id'
+        fields = ['external_id', 'name', 'prefs', 'facility']

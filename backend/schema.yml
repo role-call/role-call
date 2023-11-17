@@ -4,7 +4,7 @@ info:
   version: 0.0.1
   description: Attendance management
 paths:
-  /api/token/:
+  /backend/api/token/:
     post:
       operationId: api_token_create
       description: |-
@@ -31,7 +31,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenObtainPair'
           description: ''
-  /api/token/refresh/:
+  /backend/api/token/refresh/:
     post:
       operationId: api_token_refresh_create
       description: |-
@@ -58,7 +58,303 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenRefresh'
           description: ''
-  /groups/:
+  /backend/dj-rest-auth/login/:
+    post:
+      operationId: dj_rest_auth_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+          description: ''
+  /backend/dj-rest-auth/logout/:
+    post:
+      operationId: dj_rest_auth_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+      - dj-rest-auth
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /backend/dj-rest-auth/password/change/:
+    post:
+      operationId: dj_rest_auth_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /backend/dj-rest-auth/password/reset/:
+    post:
+      operationId: dj_rest_auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /backend/dj-rest-auth/password/reset/confirm/:
+    post:
+      operationId: dj_rest_auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /backend/dj-rest-auth/token/refresh/:
+    post:
+      operationId: dj_rest_auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /backend/dj-rest-auth/token/verify/:
+    post:
+      operationId: dj_rest_auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /backend/dj-rest-auth/user/:
+    get:
+      operationId: dj_rest_auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - dj-rest-auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    put:
+      operationId: dj_rest_auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    patch:
+      operationId: dj_rest_auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+  /backend/groups/:
     get:
       operationId: groups_list
       description: API endpoint that allows groups to be viewed or edited.
@@ -101,7 +397,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Group'
           description: ''
-  /groups/{id}/:
+  /backend/groups/{id}/:
     get:
       operationId: groups_retrieve
       description: API endpoint that allows groups to be viewed or edited.
@@ -205,11 +501,155 @@ paths:
       responses:
         '204':
           description: No response body
-  /occupanteros/:
+  /backend/i/:
     get:
-      operationId: occupanteros_list
+      operationId: i_list
       tags:
-      - occupanteros
+      - i
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Installation'
+          description: ''
+    post:
+      operationId: i_create
+      tags:
+      - i
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Installation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Installation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Installation'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Installation'
+          description: ''
+  /backend/i/{external_id}/:
+    get:
+      operationId: i_retrieve
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - i
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Installation'
+          description: ''
+    put:
+      operationId: i_update
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - i
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Installation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Installation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Installation'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Installation'
+          description: ''
+    patch:
+      operationId: i_partial_update
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - i
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInstallation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInstallation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInstallation'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Installation'
+          description: ''
+    delete:
+      operationId: i_destroy
+      parameters:
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - i
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /backend/i/{installation}/occupants/:
+    get:
+      operationId: i_occupants_list
+      parameters:
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
+      tags:
+      - i
       security:
       - jwtAuth: []
       responses:
@@ -222,9 +662,16 @@ paths:
                   $ref: '#/components/schemas/Occupant'
           description: ''
     post:
-      operationId: occupanteros_create
+      operationId: i_occupants_create
+      parameters:
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros
+      - i
       requestBody:
         content:
           application/json:
@@ -246,17 +693,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Occupant'
           description: ''
-  /occupanteros/{external_id}/:
+  /backend/i/{installation}/occupants/{external_id}/:
     get:
-      operationId: occupanteros_retrieve
+      operationId: i_occupants_retrieve
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros
+      - i
       security:
       - jwtAuth: []
       responses:
@@ -267,15 +720,21 @@ paths:
                 $ref: '#/components/schemas/Occupant'
           description: ''
     put:
-      operationId: occupanteros_update
+      operationId: i_occupants_update
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros
+      - i
       requestBody:
         content:
           application/json:
@@ -298,15 +757,21 @@ paths:
                 $ref: '#/components/schemas/Occupant'
           description: ''
     patch:
-      operationId: occupanteros_partial_update
+      operationId: i_occupants_partial_update
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros
+      - i
       requestBody:
         content:
           application/json:
@@ -328,25 +793,38 @@ paths:
                 $ref: '#/components/schemas/Occupant'
           description: ''
     delete:
-      operationId: occupanteros_destroy
+      operationId: i_occupants_destroy
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros
+      - i
       security:
       - jwtAuth: []
       responses:
         '204':
           description: No response body
-  /occupanteros_pictures/:
+  /backend/i/{installation}/occupants/pictures/:
     get:
-      operationId: occupanteros_pictures_list
+      operationId: i_occupants_pictures_list
+      parameters:
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros_pictures
+      - i
       security:
       - jwtAuth: []
       responses:
@@ -359,9 +837,16 @@ paths:
                   $ref: '#/components/schemas/Occupant_Picture'
           description: ''
     post:
-      operationId: occupanteros_pictures_create
+      operationId: i_occupants_pictures_create
+      parameters:
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros_pictures
+      - i
       requestBody:
         content:
           application/json:
@@ -382,17 +867,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Occupant_Picture'
           description: ''
-  /occupanteros_pictures/{external_id}/:
+  /backend/i/{installation}/occupants/pictures/{external_id}/:
     get:
-      operationId: occupanteros_pictures_retrieve
+      operationId: i_occupants_pictures_retrieve
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros_pictures
+      - i
       security:
       - jwtAuth: []
       responses:
@@ -403,15 +894,21 @@ paths:
                 $ref: '#/components/schemas/Occupant_Picture'
           description: ''
     put:
-      operationId: occupanteros_pictures_update
+      operationId: i_occupants_pictures_update
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros_pictures
+      - i
       requestBody:
         content:
           application/json:
@@ -433,15 +930,21 @@ paths:
                 $ref: '#/components/schemas/Occupant_Picture'
           description: ''
     patch:
-      operationId: occupanteros_pictures_partial_update
+      operationId: i_occupants_pictures_partial_update
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros_pictures
+      - i
       requestBody:
         content:
           application/json:
@@ -463,21 +966,27 @@ paths:
                 $ref: '#/components/schemas/Occupant_Picture'
           description: ''
     delete:
-      operationId: occupanteros_pictures_destroy
+      operationId: i_occupants_pictures_destroy
       parameters:
       - in: path
         name: external_id
         schema:
           type: string
         required: true
+      - in: path
+        name: installation
+        schema:
+          type: string
+          pattern: ^.+$
+        required: true
       tags:
-      - occupanteros_pictures
+      - i
       security:
       - jwtAuth: []
       responses:
         '204':
           description: No response body
-  /users/:
+  /backend/users/:
     get:
       operationId: users_list
       description: API endpoint that allows users to be viewed or edited.
@@ -520,7 +1029,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: ''
-  /users/{id}/:
+  /backend/users/{id}/:
     get:
       operationId: users_retrieve
       description: API endpoint that allows users to be viewed or edited.
@@ -626,6 +1135,27 @@ paths:
           description: No response body
 components:
   schemas:
+    Facility:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        occupant:
+          type: array
+          items:
+            $ref: '#/components/schemas/Occupant'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        installation:
+          type: integer
+      required:
+      - external_id
+      - installation
+      - name
+      - occupant
     Group:
       type: object
       properties:
@@ -639,6 +1169,53 @@ components:
       required:
       - name
       - url
+    Installation:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        prefs:
+          type: string
+        facility:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+          readOnly: true
+      required:
+      - external_id
+      - facility
+      - name
+      - prefs
+    JWT:
+      type: object
+      description: Serializer for JWT authentication.
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserDetails'
+      required:
+      - access
+      - refresh
+      - user
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - password
     Occupant:
       type: object
       properties:
@@ -652,8 +1229,9 @@ components:
           type: string
           maxLength: 200
         picture:
-          allOf:
-          - $ref: '#/components/schemas/Occupant_Picture'
+          type: array
+          items:
+            $ref: '#/components/schemas/Occupant_Picture'
           readOnly: true
         created_at:
           type: string
@@ -673,6 +1251,9 @@ components:
         external_id:
           type: string
           readOnly: true
+        imageType:
+          type: string
+          maxLength: 10
         img:
           type: string
           format: uri
@@ -683,6 +1264,46 @@ components:
       required:
       - external_id
       - modified_at
+    PasswordChange:
+      type: object
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+      required:
+      - new_password1
+      - new_password2
+    PasswordReset:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PasswordResetConfirm:
+      type: object
+      description: Serializer for confirming a password reset attempt.
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
+      - uid
     PatchedGroup:
       type: object
       properties:
@@ -693,6 +1314,22 @@ components:
         name:
           type: string
           maxLength: 150
+    PatchedInstallation:
+      type: object
+      properties:
+        external_id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        prefs:
+          type: string
+        facility:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+          readOnly: true
     PatchedOccupant:
       type: object
       properties:
@@ -706,8 +1343,9 @@ components:
           type: string
           maxLength: 200
         picture:
-          allOf:
-          - $ref: '#/components/schemas/Occupant_Picture'
+          type: array
+          items:
+            $ref: '#/components/schemas/Occupant_Picture'
           readOnly: true
         created_at:
           type: string
@@ -722,6 +1360,9 @@ components:
         external_id:
           type: string
           readOnly: true
+        imageType:
+          type: string
+          maxLength: 10
         img:
           type: string
           format: uri
@@ -757,6 +1398,42 @@ components:
           title: Gruppen
           description: Die Gruppen, denen der Benutzer angehört. Ein Benutzer bekommt
             alle Berechtigungen dieser Gruppen.
+    PatchedUserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          title: Benutzername
+          description: Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern
+            und @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: E-Mail-Adresse
+        first_name:
+          type: string
+          title: Vorname
+          maxLength: 150
+        last_name:
+          type: string
+          title: Nachname
+          maxLength: 150
+    RestAuthDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+          readOnly: true
+      required:
+      - detail
     TokenObtainPair:
       type: object
       properties:
@@ -789,6 +1466,14 @@ components:
       required:
       - access
       - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
     User:
       type: object
       properties:
@@ -819,6 +1504,38 @@ components:
             alle Berechtigungen dieser Gruppen.
       required:
       - url
+      - username
+    UserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          title: Benutzername
+          description: Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern
+            und @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: E-Mail-Adresse
+        first_name:
+          type: string
+          title: Vorname
+          maxLength: 150
+        last_name:
+          type: string
+          title: Nachname
+          maxLength: 150
+      required:
+      - email
+      - pk
       - username
   securitySchemes:
     jwtAuth:

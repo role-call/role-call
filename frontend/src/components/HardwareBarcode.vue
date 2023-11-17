@@ -7,7 +7,7 @@
   <img v-if="barcodeStore.occupant?.img" v-bind:src="barcodeStore.occupant?.img"  width="200" height="200">
   </div><div class="col-md"><p>{{barcodeStore.occupant.firstName}}</p><p>{{barcodeStore.occupant.lastName}}</p></div>
 
-    <k-progress v-if="barcodeStore.occupant?.img" :percent="barcodeStore.progress*10" :show-text="false" ></k-progress>
+    <v-progress-linear v-if="barcodeStore.occupant?.img" :buffer-value="barcodeStore.progress*10" :show-text="false" ></v-progress-linear>
 </div></div>
 
 </template>

@@ -15,3 +15,5 @@ def test_superuser_view(admin_client):
    url = reverse('admin:index')
    response = admin_client.get(url)
    assert response.status_code == 200
+
+   
