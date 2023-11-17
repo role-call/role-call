@@ -28,7 +28,7 @@ function authHeader(url) {
     const { user } = useAuthStore();
     const isLoggedIn = !!user?.access;
 
-    const isApiUrl = url.startsWith('http://localhost:8000/');
+    const isApiUrl = url.startsWith(import.meta.env.VITE_API_BASE);
 
     if (isLoggedIn && isApiUrl) {
         return { Authorization: `Bearer ${user.access}` };
