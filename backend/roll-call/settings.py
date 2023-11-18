@@ -76,7 +76,7 @@ STATIC_ROOT = env('STATIC_ROOT', default=os.path.join(BASE_DIR, "static/"))
 
 SITE_ID = env.int("SITE_ID")
 MIDDLEWARE = [
-
+    'allauth.account.middleware.AccountMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
