@@ -30,6 +30,7 @@ pytest-django = "*"
 install = "*"
 pyyaml = "*"
 uritemplate = "*"
+drf-extensions = "*"
 
 [dev-packages]
 pyflakes = "*"

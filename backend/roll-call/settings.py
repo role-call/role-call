@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'ajax_datatable',
     'dj_rest_auth',
     'rest_framework.authtoken',
-    "django_htmx"
+    "django_htmx",
+    "django_filters"
 
 ]
 
@@ -76,7 +77,7 @@ STATIC_ROOT = env('STATIC_ROOT', default=os.path.join(BASE_DIR, "static/"))
 
 SITE_ID = env.int("SITE_ID")
 MIDDLEWARE = [
-    'allauth.account.middleware.AccountMiddleware',
+
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -89,6 +90,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
 ]
 SOCIALACCOUNT_PROVIDERS = {
     'nextcloud': {
@@ -115,6 +117,8 @@ TEMPLATES = [
 URL_PREFIX = env.str('URL_PREFIX', default='backend')
 WSGI_APPLICATION = 'roll-call.wsgi.application'
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (

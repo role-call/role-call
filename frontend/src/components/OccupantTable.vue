@@ -1,12 +1,15 @@
 <template>
-  <v-data-table
+  <v-data-table-server
     v-model:items-per-page="itemsPerPage"
     :headers="headers"
-    :items-length="totalItems"
-    :items="tableStore.items"
+
+    :items-length="itemsLength"
+     :items="items"
     :loading="loading"
     class="elevation-1"
     item-value="name"
+    :page="page"
+    v-model:sort-by="sorting"
     @update:options="loadItems"
   >
     <template v-slot:top>
@@ -44,8 +47,8 @@
                 <v-row>
                   <v-col
                     cols="12"
-                    sm="6"
-                    md="4"
+                    sm="8"
+                    md="6"
                   >
                     <v-text-field
                       v-model="editedItem.firstName"
@@ -54,8 +57,8 @@
                   </v-col>
                   <v-col
                     cols="12"
-                    sm="6"
-                    md="4"
+                    sm="8"
+                    md="6"
                   >
                     <v-text-field
                       v-model="editedItem.lastName"
@@ -118,20 +121,21 @@
     <template v-slot:no-data>
       <v-btn color="primary" > Reset </v-btn>
     </template>
-  </v-data-table>
+  </v-data-table-server>
 </template>
+
 
 <script>
   import {useInstallationStore} from "@/store/installationstore";
   import {useTableStore} from "@/store/tablestore";
+  import {mapState, storeToRefs} from "pinia";
 
   export default {
     name: "OccupantTable",
-    props: ["installation"],
     data: () => ({
            dialog: false,
       dialogDelete: false,
-      itemsPerPage: 5,
+      itemsPerPage: 2,
       headers: [
         {
           title: 'First Name',
@@ -142,9 +146,9 @@
         { title: 'Id', key: 'external_id', align: 'end' },
         { title: 'Actions', key: 'actions', sortable: false },
       ],
-      serverItems: [],
       loading: true,
-      totalItems: 0,
+      page:1,
+      sorting:[],
       editedIndex: -1,
       editedItem: {
         firstName: '',
@@ -155,12 +159,15 @@
         firstName: '',
         lastName:'',
         external_id: '',
-      }
+      },
+
     }),
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       },
+      ...mapState(useInstallationStore,{installation: 'chosenInstallation'}),
+      ...mapState(useTableStore,['items','itemsLength'])
     },
 
     watch: {
@@ -170,37 +177,43 @@
       dialogDelete (val) {
         val || this.closeDelete()
       },
+      installation(val) {
+
+
+        this.page =1;
+        this.loadItems();
+      }
     },
 
 
     mounted() {
-      this.initialize();
 
     },
     setup(props) {
       const tableStore = useTableStore();
       const installationStore = useInstallationStore();
-      installationStore.chosenInstallation = props.installation;
+
+      //installationStore.chosenInstallation = props.installation;
       return {installationStore, tableStore};
     },
     methods: {
-      initialize() {
-        this.loadItems({ page:0, itemsPerPage:1, sortBy:"firstName" });
-      },
+
+
+
       editItem (item) {
-        this.editedIndex = this.serverItems.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.serverItems.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.serverItems.splice(this.editedIndex, 1)
+        this.items.splice(this.editedIndex, 1)
         this.closeDelete()
       },
 
@@ -222,18 +235,26 @@
 
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.serverItems[this.editedIndex], this.editedItem)
+          Object.assign(this.items[this.editedIndex], this.editedItem)
         } else {
-          this.serverItems.push(this.editedItem)
+          this.items.push(this.editedItem)
         }
         this.close()
       },
 
-      async loadItems({ page, itemsPerPage, sortBy }) {
+      async loadItems() {
+        //console.log(params);
         this.loading = true
-        await this.installationStore.getOccupants();
-        this.tableStore.items = this.installationStore.occupants
-        this.totalItems = 100
+
+        var itemsPerPage = this.itemsPerPage;
+        var page = this.page
+        var queryparams = { page, itemsPerPage};
+
+        if (this.sorting.length > 0) {
+          queryparams.ordering = (this.sorting[0].order== "desc"?"-":"")+this.sorting[0].key;
+        }
+        await this.tableStore.getOccupants(this.installationStore.chosenInstallation,queryparams);
+
         this.loading = false
 
       },

@@ -4,11 +4,14 @@ from .models import Occupant, Occupant_Picture, Installation
 from rest_framework import viewsets
 from rest_framework import permissions
 from django.views import generic
+
+from .paginations import StandardResultsSetPagination
 from .serializers import UserSerializer, GroupSerializer, OccupantSerializer, Occupant_PictureSerializer, \
     InstallationSerializer
-from rest_framework import generics
+from rest_framework import generics,filters
 from .forms import OccupantPictureForm
 import logging
+import django_filters.rest_framework
 
 from bootstrap_modal_forms.generic import (
     BSModalLoginView,
@@ -24,7 +27,6 @@ class IndexView(TemplateView):
 class InstallationsListView(generic.ListView):
     context_object_name = 'installations'
     def get_queryset(self):
-        """Return the last five published questions."""
         return Installation.objects.all()
 
     permission_classes = [permissions.IsAuthenticated]
@@ -63,6 +65,7 @@ class OccupantViewSet(viewsets.ModelViewSet):
     queryset = Occupant.objects.all()
     serializer_class = OccupantSerializer
     lookup_field = 'external_id'
+    pagination_class = StandardResultsSetPagination
     permission_classes = [permissions.IsAuthenticated]
 class OccupantDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
     lookup_field= "external_id"
@@ -124,6 +127,8 @@ class OccupantPictureUpdateView(UpdateView):
 class OccupantViewSet(viewsets.ModelViewSet):
     logger = logging.getLogger(__name__)
     queryset = Occupant.objects
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
     def get_queryset(self):
         installation = self.kwargs["installation"]
         logger = logging.getLogger(__name__)
@@ -136,7 +141,7 @@ class OccupantViewSet(viewsets.ModelViewSet):
 class InstallationViewSet(viewsets.ModelViewSet):
     logger = logging.getLogger(__name__)
     queryset = Installation.objects
-
+    pagination_class = None
     serializer_class = InstallationSerializer
     lookup_field = 'external_id'
     permission_classes = [permissions.IsAuthenticated]

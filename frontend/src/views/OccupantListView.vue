@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-      <OccupantTable />
+      <OccupantTable/>
   </div>
 </template>
 

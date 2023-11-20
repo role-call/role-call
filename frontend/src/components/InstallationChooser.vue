@@ -7,16 +7,15 @@ import {useTableStore} from "@/store/tablestore";
 const emitter = defineEmits(["changedV"]);
 const changed =  async function changed() {
 
-  console.log(route.params);
-  emitter('changedV',installationStore.chosenInstallation);
+
   if (route.params.installationId){
 
     const newParams ={ installationId: installationStore.chosenInstallation};
     const currentParams = route.params;
     route.params.installationId = installationStore.chosenInstallation;
     const mergedParams = { ...currentParams, newParams };
-    await installationStore.getOccupants();
-    tableStore.items = installationStore.occupants
+//    await tableStore.getOccupants();
+    //tableStore.items = installationStore.occupants
     router.push({ params: mergedParams });
 
   }
@@ -44,9 +43,8 @@ export  default {
     const installationStore = useInstallationStore();
     const tableStore = useTableStore();
     installationStore.getInstallations();
-     console.log(installationStore.chosenInstallation);
-    if (this.$route.params.installationId &&  installationStore.chosenInstallation !='' ){
-      console.log(this.$route.params.installationId);
+
+    if (this.$route.params.installationId &&  (typeof installationStore.chosenInstallation != 'undefined' ||installationStore.chosenInstallation !='' )){
       installationStore.chosenInstallation = this.$route.params.installationId;
 
     }

@@ -44,6 +44,7 @@ export default {
   },
   setup() {
     const installationStore = useInstallationStore();
+    console.log("here");
     return {installationStore};
   },
 
@@ -54,9 +55,12 @@ export default {
   },
   methods: {
 
-    buildMenu() {
+    async buildMenu() {
           const installationStore = useInstallationStore();
-    this.chosen = ref(installationStore.chosenInstallation);
+          if (installationStore.installations.length < 1){
+            await installationStore.getInstallations();
+          }
+            this.chosen = ref(installationStore.chosenInstallation);
     this.menuItems = this.$router.getRoutes().filter((r) => r.meta.inMenu).map((r) => {
         return {
           name: r.name,
